@@ -23,7 +23,7 @@ The directory contains the python files:
 
 ## Required packages
 
-[pytorch](https://pytorch.org/get-started/locally/), [torchvision}(https://pytorch.org/get-started/locally/), [numpy](https://numpy.org/), [matplotlib](https://matplotlib.org/), [tqdm](https://tqdm.github.io/)
+[pytorch](https://pytorch.org/get-started/locally/), [torchvision](https://pytorch.org/get-started/locally/), [numpy](https://numpy.org/), [matplotlib](https://matplotlib.org/), [tqdm](https://tqdm.github.io/)
 
 ## How to run the code
 
