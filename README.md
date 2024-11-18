@@ -1,6 +1,6 @@
 # Ensembles provably learn equivariance through data augmentation
 
-This repository contains code for the paper "Ensembles provably learn equivariance through data augmentation".
+This repository contains code for the paper "[Ensembles provably learn equivariance through data augmentation](https://arXiv.org/abs/2410.01452)".
 
 
 
@@ -61,5 +61,5 @@ The code is released under a Creative Commons Attribution-ShareAlike (CC BY-SA 2
         author = {Oskar Nordenfors and Axel Flinth},
         title = {Ensembles provably learn equivariance through data augmentation},
         year = {2024},
-        journal = {arXiv:XXXX}
+        journal = {arXiv:2410.01452}
         }
