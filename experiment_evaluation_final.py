@@ -188,7 +188,7 @@ def evaluate(sym,syminit,member,epoch,indistribution):
 
     # Save data
     ensemble_eval_array = np.array([loss,acc,osp_mean,osp_std,div,div_max])
-    PATH = os.path.join(SAVE_ROOT, FILE_NAME+'_'+INV+'_'+str(M)+'_'+'model_ensemble_for_epoch'+'_'+str(epoch)+'_'+DATA+'_'+'eval_data')
+    PATH = os.path.join(SAVE_ROOT, FILE_NAME+'_'+INV+'_'+str(M)+'_'+'model_ensemble_for_epoch'+'_'+str(epoch)+'_'+DATA+'_'+'eval_data'+bootstrap)
     np.save(PATH,ensemble_eval_array)
 
 if __name__ == "__main__":
@@ -226,6 +226,7 @@ if __name__ == "__main__":
         epochs = range(epochs+1)
     else:
         epochs = (epochs,)
+
     for member in members:
         subensembles(members[-1],member,sym,syminit)
         for epoch in epochs:
