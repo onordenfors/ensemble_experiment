@@ -5,7 +5,7 @@ This repository contains code for the paper "[Ensembles provably learn equivaria
 
 
 
-![Graphic: An ensemble stays equivariant through training](graphical_depiction_ensemble_nontransp.png)
+![Graphic: An ensemble stays equivariant through training](graphics/graphical_depiction_ensemble_nontransp.png)
 
 ## Contents
 
