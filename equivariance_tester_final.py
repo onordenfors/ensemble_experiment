@@ -1,9 +1,9 @@
 import torch
 import torch.nn.functional as F
-from augmentation_final import C4
+from augmentation_final import C4,C16
 from tqdm import tqdm, trange
 
-def test(model, loader, criterion, device, G):
+def test(model, loader, criterion, device, group= 'G4'):
 
     running_loss = 0.0
     running_acc = 0.0
@@ -13,6 +13,13 @@ def test(model, loader, criterion, device, G):
     div_max = div
     
     model.eval()
+
+    if group == 'C4':
+        G=4
+        transform = C4
+    else:
+        G=16
+        transform = C16
     with torch.no_grad():
 
         for data in tqdm(loader,desc='Batches completed:',leave=False):
@@ -33,7 +40,7 @@ def test(model, loader, criterion, device, G):
             part_osp = torch.zeros((inputs.shape[0]))
             part_osp = part_osp.to(device)
             for g in range(G):
-                orbit_outputs = model(C4(inputs,g))
+                orbit_outputs = model(transform(inputs,g))
                 part_osp += (orbit_outputs.argmax(1) == outputs.argmax(1))
                 orbit_probs = F.softmax(orbit_outputs,dim=1)
                 orbit_log_probs = F.log_softmax(orbit_outputs,dim=1)

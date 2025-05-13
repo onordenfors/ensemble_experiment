@@ -8,11 +8,11 @@ import torchvision.transforms as transforms
 import networks_final
 from trainer_final import train
 from tqdm import trange
-from augmentation_final import randomC4
+from augmentation_final import randomC4, randomC16
 
-def experiment(sym,syminit,members, epochs, batch=32, lr=0.01, wd=0):
+def experiment(sym,syminit,cnn,members, epochs, batch=32, lr=0.01, wd=0,group = 'C4'):
     PATH = os.getcwd() # Get current directory
-    PATH1 = os.path.join(PATH, r'EnsembleExperiment/Members/') # create new directory name
+    PATH1 = os.path.join(PATH, 'EnsembleExperiment',group,'Members') # create new directory name
     PATH2 = os.path.join(PATH, r'data/') # create new directory name
     if not os.path.isdir(PATH1): # if the directory does not already exist
         os.makedirs(PATH1) # make a new directory
@@ -23,7 +23,7 @@ def experiment(sym,syminit,members, epochs, batch=32, lr=0.01, wd=0):
     else:
         pass
     LOAD_ROOT = './data/' # Root for loading dataset
-    SAVE_ROOT = './EnsembleExperiment/Members/' # Root for saving data
+    SAVE_ROOT = os.path.join('EnsembleExperiment',group,'Members') # Root for saving data
 
     TASKS = members # Total number of tasks/members across architectures
 
@@ -45,7 +45,10 @@ def experiment(sym,syminit,members, epochs, batch=32, lr=0.01, wd=0):
 
     # Create transforms for the data, including normalization w.r.t. mean and standard deviation,
     # and a random rotation of K*pi/2 radians, K integer
-    train_transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize(muhat,sigmahat),randomC4])
+    if group == 'C4':
+        train_transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize(muhat,sigmahat),randomC4])
+    elif group == 'C16':
+        train_transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize(muhat,sigmahat),randomC16])
 
     # Load data with transforms applied
     train_data = datasets.MNIST(
@@ -104,9 +107,16 @@ def experiment(sym,syminit,members, epochs, batch=32, lr=0.01, wd=0):
         INV='SYMINIT'
     else:
         INV='ASYMINIT'
+
+    if cnn:
+        FILE_NAME ='CNN'
+        INV = ''
+        
     # train ensemble members
     for TASK_ID_INT in trange(TASKS,desc='Tasks completed:',leave=False):
-        if sym:
+        if cnn:
+             model = networks_final.CNN()
+        elif sym:
             INV='SYMINIT'
             model = networks_final.omegaCNN(omega)
         else:
@@ -114,6 +124,7 @@ def experiment(sym,syminit,members, epochs, batch=32, lr=0.01, wd=0):
                 model = networks_final.omegaCNNAsym(omega)
             else:
                 model = networks_final.omegaCNN(omega)
+           
 
         # Initialize the chosen model
         model.init_weights()
@@ -139,10 +150,13 @@ if __name__ == "__main__":
     )
     parser.add_argument("--sym", required=False, dest = 'symm', action='store_true')
     parser.add_argument("--asym", required=False, dest = 'symm', action='store_false')
+    parser.add_argument("--cnn", required=False, dest = 'cnn', action='store_true')
     parser.add_argument("--syminit", required=False, dest = 'symminit', action='store_true')
     parser.add_argument("--asyminit", required=False, dest = 'symminit', action='store_false')
     parser.add_argument("--members", required=False, type=int, default=1000)
     parser.add_argument("--epochs", required=False, type=int, default=10)
+    parser.add_argument("--C4", required=False, dest = 'group4', action='store_true')
+    parser.add_argument("--C16", required=False, dest = 'group4', action='store_false')
     
     args = parser.parse_args()
 
@@ -150,4 +164,11 @@ if __name__ == "__main__":
     syminit = args.symminit
     members = args.members
     epochs = args.epochs
-    experiment(sym,syminit,members,epochs,batch=32,lr=0.01,wd=0)
+    group4 = args.group4
+    cnn = args.cnn
+
+    if group4:
+        group = 'C4'
+    else:
+        group = 'C16'
+    experiment(sym,syminit,cnn,members,epochs,batch=32,lr=0.01,wd=0,group=group)
