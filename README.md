@@ -9,7 +9,7 @@ This repository contains code for the paper "[Ensembles provably learn equivaria
 
 ## Required packages
 
-[pytorch](https://pytorch.org/get-started/locally/), [torchvision](https://pytorch.org/get-started/locally/), [numpy](https://numpy.org/), [matplotlib](https://matplotlib.org/), [tqdm](https://tqdm.github.io/)
+[pytorch](https://pytorch.org/get-started/locally/), [torchvision](https://pytorch.org/get-started/locally/), [numpy](https://numpy.org/), [matplotlib](https://matplotlib.org/), [tqdm](https://tqdm.github.io/) [pytorch geometric](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html)
 
 
 ## Discrete rotation experiments
@@ -37,7 +37,7 @@ Then plot the results `plotting_ensemble_sizes_final.py` with the flags
 
     plotting_final.py --members 1000 --epochs 10 --bootstraps 30 --C16
 
-This will run the experiment for the $C_16$ as set up in the main paper, and display something similar to Figure 4 (right) from the paper. Please note that running this code will take a **VERY** long time on a personal computer or laptop. The experiments in the paper were made on a cluster, with thousands of jobs working in parallell.
+This will run the experiment for the $C_16$ as set up in the main paper, and display something similar to Figure 3 (right) from the paper. Please note that running this code will take a **VERY** long time on a personal computer or laptop. The experiments in the paper were made on a cluster, with thousands of jobs working in parallell.
 
 ### Modifying the setup
 Use the flags `--members` and `--epochs` to change the number of members/epochs. The initalization can be changed by flags `--asymint`/`--syminit`, and the supports with `--asym`/`--sym`. Note that `--sym` will always cause a symmetric initialization. The flag `--cnn` is for generating standard full-support CNNs.
@@ -45,6 +45,30 @@ Use the flags `--members` and `--epochs` to change the number of members/epochs.
 To change the group, change the flag `--C16` to `--C4` in all calls. To adjust the number of bootstraps in the evaluation, use the flag `--bootstraps`
 
 To run the experiment for 5x5-filters: Go into the file `ensemble_experiment_final.py` and comment out lines 74-78, 90, 97 and remove the comments on lines 79-88, 91-94, 98-101, and go into the file `experiment_evaluation_final.py` and comment out lines 106-110, 122, 131 and remove the comments on lines 111-120, 123-126, 132-135. To run the code for other filter sizes, please modify the corresponding parts of the code.
+
+## ModelNet experiments
+
+### How to run the code
+
+NOTE: Running the code will save all outputs of all models that are trained, and hence take up some disk space.
+
+First, train the models by running
+
+    python point_cloud_experiment_parallell.py
+
+Then, evaluate them on the test data
+
+    python save_logits.py
+
+Next, use the outputs to generate bootstrapped ensembles with
+
+    python ensemble_logits.py
+
+And finally, plot the results via running
+
+    python plot_ensemble_sizes_pn.py
+
+This should produce something like Figure 3 in the paper. Please note that also this code will take very long time to run on a personal computer or laptop.
 
 ## Copyright
 The code is released under a Creative Commons Attribution-ShareAlike (CC BY-SA 2.0) licence. You are hence free to copy, re-distribute and modify the code as you please, as long as you credit us and use the same licence for your derived work. Also, please cite the paper!
