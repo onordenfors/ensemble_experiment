@@ -37,7 +37,7 @@ Then plot the results `plotting_ensemble_sizes_final.py` with the flags
 
     plotting_final.py --members 1000 --epochs 10 --bootstraps 30 --C16
 
-This will run the experiment for the $C16$ as set up in the main paper, and display something similar to Figure 4 (right) from the paper. Please note that running this code will take a **VERY** long time on a personal computer or laptop. The experiments in the paper were made on a cluster, with thousands of jobs working in parallell.
+This will run the experiment for the $C_16$ as set up in the main paper, and display something similar to Figure 4 (right) from the paper. Please note that running this code will take a **VERY** long time on a personal computer or laptop. The experiments in the paper were made on a cluster, with thousands of jobs working in parallell.
 
 ### Modifying the setup
 Use the flags `--members` and `--epochs` to change the number of members/epochs. The initalization can be changed by flags `--asymint`/`--syminit`, and the supports with `--asym`/`--sym`. Note that `--sym` will always cause a symmetric initialization. The flag `--cnn` is for generating standard full-support CNNs.
